@@ -30,10 +30,12 @@ jobs:
       - name: Create md files
         run: |
           while IFS= read -r obj; do
-              echo $obj | jq '.title';
-              echo $obj | jq '.body';
+              title=$( echo $obj | jq '.title' );
+              echo $title;
+              touch ${title}.md
+              echo $obj | jq '.body' >> ${title}.md
           done < <(jq -c '.contents[]' articles.json)
-          
+
       # Runs a set of commands using the runners shell
       - name: ls
         run: |
